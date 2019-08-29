@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>AjaxUpload上传文件</title>
+  <script src="../javascripts/jquery-1.8.2.js"></script>
+</head>
+
+<body>
+  <script type="text/javascript">
+    function uploadFn() {
+      // var form = $("#upload");
+      document.forms[0].target = "rfFrame";
+      var form = document.getElementById("upload");
+      var formData = new FormData(form);
+
+      $.ajax({
+        url: "http://localhost:3000/static/upload",
+        type: "POST",
+        data: formData,
+        processData: false,
+        contentType: false,
+        dataType: "json",
+        success: function (res) {
+          console.log(res)
+        },
+        error: function (err) {
+          console.log(err)
+        }
+      });
+
+    }
+  </script>
+  <form id="upload" enctype="multipart/form-data" method="post">
+    <input type="file" id="file1" name="file" />
+    <input type="file" id="file2" name="file2" />
+    <input type="submit" value="上传" onclick="uploadFn()" />
+  </form>
+  <iframe id="rfFrame" name="rfFrame" src="about:blank" style="display:none;"></iframe>
+
+
+</body>
+
+</html>

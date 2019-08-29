@@ -1,0 +1,211 @@
+linux指令集
+ls
+ll -h
+sort
+ps -ef
+grep 
+vim 
+cd
+find
+tree
+cp
+scp
+rm 
+mv
+pwd
+tar
+mkdir
+kill
+crontab
+top
+chmod
+chown
+su
+sudo
+cat
+touch
+tail 
+ifconfig
+locate(updatedb)
+date
+md5sum
+
+
+mysql指令集
+alter table tablename 
+	drop field;
+	add  field varchar(10)
+	change oldfieldname newfieldname varchar(10)
+	modify fieldname varchar(10)
+	rename newtablename;
+create table tablename (
+	field1 varchar default null
+)engine=innodb default charset=utf-8;
+drop table tablename;
+drop database tablename;
+insert into table(f1,f2) values (f1,f2),(f1,f2),(f1,f2);
+isnert into table(f1,f2) select f1,f2 from table where ...;
+delete from table where ...;
+update table set f1=newvalue where ...;
+
+desc 1.desc table	2.select * from table order by id desc
+
+select * from table1,table2 where t1.id=t2.id;
+select * from table1 left join table2 on tabel1.id=tabel2.id;
+select * from table1 right join tabel2 on tabel1.id=table2.id;
+select * from table1 inner join table2 on table1.id=table2.id;
+select * from tabel1 union select * from tabel2 ;
+
+聚合函数：
+	count，max，min，avg，sum	简单计算
+	abs，ceil，floor，mod，sqrt，rand，round，truncate，	数学计算
+	concat,concat_ws，substring，reverse，
+	case when else end as		when流程控制块
+
+mysqldump -uroot -proot db_name > file1;
+select ... into outfile filename [option] from table;
+load data infile filename  into tabel1(f1,f2...) 
+
+
+
+java
+javac	java compile
+java	执行程序
+访问控制修饰符 : default, public , protected, private
+非访问控制修饰符 : final, abstract, static, synchronized
+局部变量				方法中的变量
+类变量（静态变量）		static变量
+成员变量（非静态变量）	new实例时的变量
+一个源文件中只能有一个public类
+内置数据类型	byte8 short16 int32 long64 float32 double64	boolean1 char16
+引用数据类型	就是指针
+
+public private protected
+如果 case 语句块中没有 break 语句时，匹配成功后，从当前 case 开始，后续所有 case 的值都会输出。
+
+包装类
+
+equals 和 == 的不同：equals比较的是两个引用指向的数据是否一致，equals是object提供的方法，子类可以自己定义，供开发者使用
+
+java时间相关使用
+Date 三点：new Date(),new Date(long),date.getTime()
+SimpleDateFormat 关键点：new SimpleDateFormat(formatStr),sdf.format(dateObj),sdf.parse(dataStr)
+Calender 时间操作：
+Calender ca = Calender.getInstence();
+ca.setTime(dateObj) 			dateObj => calendarObj
+Date ca.getTime()				calendarObj => dateObj
+ca.add(type,int)
+
+集合类
+
+
+
+
+
+spring
+ioc 容器
+依赖注入
+自动装配
+关键注解
+1.@Required 强制bean属性的setter方法在配置文件中定义
+2.@Autowired	自动装配bean，和@Resource作用类似
+3.@Qualifier	显式声明beanid，配合@Autowired使用，效果更佳
+4.@Controller	controller类使用，控制器，和@RequestMapping，@RequestParam联合使用
+5.@RequestMapping 用在类或方法上，关心三个配置：params(过滤符合参数要求的请求)，method(确定请求类型)，header(过滤符合header要求的请求)
+6.@Resource		name和type两种属性，用来装配bean
+7.@ResponseBody		用于将Controller的方法返回的对象，通过适当的HttpMessageConverter转换为指定格式后，写入到Response对象的body数据区
+8.@Component	类注解，告诉spring:这是一个bean
+9.@Repository	dao层注解，在dao实现类上注解
+10.@PathVariable	提取请求url中的指定变量，如：
+	@Controller  
+	public class TestController {  
+		@RequestMapping(value="/user/{userId}/roles/{roleId}",method = RequestMethod.GET)  
+		public String getLogin(@PathVariable("userId") String userId,@PathVariable("roleId") String roleId)
+11.@ReqeustParam	和@Controller,@RequestMapping联合使用
+
+搭建过程
+web.xml		工程配置文件：servlet,filter,listener等配置
+applicationContext.xml   spring框架配置：bean声明，扫描策略等配置
+构建项目结构（controller，service，dao等）
+
+	
+	
+junit 
+注解
+@Test,@Before,@After,@BeforeClass,@AfterClass,@Ignore
+@RunWith(Suite.class) @Suite.SuiteClasses({class1,class2...})
+@Test(timeout=1000)
+@Test(expected = SomeException.class)
+断言
+assertTrue(),assertFalse(),assertNull,assertNotNull(),assertEquals(a,b)
+参数化
+@RunWith(Parameterized.class) 声明运行类为参数化类
+case类声明构造方法，用来接收参数化内容
+case类创建参数化方法	
+	@Parameters(name= "{index}: isValid({0})={1}")
+	public static Collection paramMothed(){
+		do something;//可以读mysql，
+		return Collection
+	}
+
+
+
+
+suite
+通过注解，批量执行case类
+@RunWith(Suite.class) @Suite.SuiteClasses({class1,class2...})
+@FixMethodOrder(option)	修饰case类，声明case的执行顺序策略：
+	MethodSorters.DEFAULT			方法名hash顺序进行测试
+	MethodSorters.NAME_ASCENDING	方法名排序进行测试
+	MethodSorters.JVM 				随机顺序进行测试
+
+
+异常处理
+1.@Test(expected = SomeException.class)			缺点：可能一个case有多个exception，无法定位具体的exception
+2.try{测试代码;fail块}catch(exception){断言}	缺点：
+3.	@Rule
+	public ExpectedException expectedEx = ExpectedException.none();
+	@Test
+	public void case1(){
+		expectedEx.expect(SomeException.class);
+		expectedEx.expectMessage("exception string");
+		case block
+	}
+
+	
+	
+	
+	
+	
+jquery选择器
+#			id选择器
+.			class选择器
+p 			元素类型选择器
+[]			属性选择器
+:eq(index)	index指定选择器
+:gt(no)		大于no选择器
+:lt(no)		小于no选择器
+元素操作方法：
+element.text()		元素文本内容
+element.html()		元素html内容
+element.val()		表单字段的值
+element.attr()		获取元素属性
+element.append()
+element.prepend()
+element.after()
+element.before()
+element.empty()
+element.remove()
+
+基于jquery的ajax
+1.element.load(url,data,callback)		后台拉数据，展示到元素中
+2.$.ajax(options)
+	async			默认true异步，可改为false异步
+	contentType		发送给服务器的格式，默认就好，
+	dataType		收到服务器给的数据的格式，多为json
+	data			发送给服务器的数据
+	url
+	type			post，get
+
+js
+==和===   ==会做转化，结果无法预知，只用===

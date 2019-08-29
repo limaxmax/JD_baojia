@@ -1,0 +1,28 @@
+CREATE TABLE `scheduletasks` (
+  `sku` bigint(20) NOT NULL,
+  `scanRule` varchar(100) DEFAULT '* * */4 * * *',
+  `scanStart` int(20) DEFAULT NULL,
+  `scanStop` int(20) DEFAULT NULL,
+  `status` int(1) NOT NULL DEFAULT '0',
+  `mail` int(1) NOT NULL DEFAULT '0',
+  `p_want` int(5) DEFAULT '0',
+  `flag` int(1) NOT NULL DEFAULT '0',
+  `name` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`sku`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+
+version
+CREATE TABLE `scheduletasks` (
+  `sku` bigint(20) NOT NULL,
+  `scanRule` varchar(100) DEFAULT '* * */4 * * *',
+  `scanStart` int(20) DEFAULT NULL,
+  `scanStop` int(20) DEFAULT NULL,
+  `status` int(1) NOT NULL DEFAULT '0',
+  `mail` int(1) NOT NULL DEFAULT '0',
+  `receiver` varchar(200) DEFAULT NULL,
+  `p_want` int(5) DEFAULT '0',
+  `flag` int(1) NOT NULL DEFAULT '0',
+  `name` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`sku`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 

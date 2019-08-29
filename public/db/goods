@@ -1,0 +1,24 @@
+CREATE TABLE `goods` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `sku` bigint(20) DEFAULT NULL,
+  `name` varchar(100) NOT NULL,
+  `price` varchar(20) NOT NULL,
+  `crate_stamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `desc` varchar(200) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `sku` (`sku`)
+) ENGINE=InnoDB AUTO_INCREMENT=9250 DEFAULT CHARSET=utf8
+
+
+version2.0
+CREATE TABLE `goods` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `sku` bigint(20) DEFAULT NULL,
+  `name` varchar(100) NOT NULL,
+  `price` varchar(20) NOT NULL,
+  `createtime` int(20) DEFAULT NULL,
+  `receiver` varchar(200) DEFAULT NULL,
+  `desc` varchar(200) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `sku` (`sku`)
+) ENGINE=InnoDB AUTO_INCREMENT=370 DEFAULT CHARSET=utf8

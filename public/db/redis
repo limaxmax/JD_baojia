@@ -1,0 +1,16 @@
+	1.hash 	记录不同用户的商品扫描任务
+    key：pin
+    field：sku
+    info: start_end_rule_receiver
+	2.string	记录不同商品的最低价格，perfix
+    key：perfix_sku
+    value: minPrice
+	3.zset	记录商品价格查询流水，perfix。说明：price为时间戳和价格字符串拼接，加时间戳主要是为了考虑去重
+    key: perfix_sku
+    score: timestamp
+    price: timestamp + price
+
+	4.set	记录商品的接收邮箱，perfix，使用set主要是为了给多个邮箱地址发邮件，去重
+    key:perfix_sku
+    value:mailAddress
+	

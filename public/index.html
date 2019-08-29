@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <!-- 引入 ECharts 文件 -->
+  <script src="./javascripts/echarts.min.js"></script>
+  <script src="./javascripts/jquery-1.8.2.js"></script>
+</head>
+
+<body>
+  <h1>
+    <ruby>欢<rt>gei</rt></ruby>
+    <ruby>迎<rt>wo</rt></ruby>
+    <ruby>指<rt>bi</rt></ruby>
+    <ruby>教<rt>zui</rt></ruby>
+  </h1>
+  <div id="skuButtons"></div>
+  <!--div id="main" style="width: 600px;height:400px;"></div-->
+  <input type="file" id="file">选择文件</input>
+  <script type="text/javascript">
+    //echarts基础配置
+    //var baseOption = {
+    //};
+    function showChart(sku) {
+
+      // 展示option
+      let option = {
+        title: {
+          text: ''
+        },
+        tooltip: { trigger: "axis" },
+        legend: {
+          data: ['价格']
+        },
+        xAxis: {
+          data: []
+        },
+        yAxis: {},
+        series: [{
+          name: '价格',
+          type: 'line',
+          symbol: 'circle',
+          //data设置为空，异步加载数据展示
+          data: []
+        }]
+      }
+
+      // ajax获取sku信息
+      $.ajax({
+        type: "GET",
+        url: "http://localhost:3000/users/queryGoods?sku=" + sku,
+        dataType: "json",
+        success: function (data) {
+
+          if (data.length !== 0) {
+            //新增一个div容器
+            $("body").append('<div id="' + sku + '" style="width: 600px;height:400px;float:left"></div>');
+            let myChart = echarts.init(document.getElementById(sku));
+            myChart.hideLoading();
+            var xdata = [];
+            var ydata = [];
+            data.forEach((item) => {
+              xdata.push(item.crate_stamp.substr(5, 14));
+              ydata.push(parseFloat(item.price));
+            })
+
+            option.xAxis.data = xdata;
+            option.series[0].data = ydata;
+            option.title.text = data[0].name.length > 20 ? data[0].name.substr(0, 19) + "..." : data[0].name
+            console.log(option)
+            myChart.setOption(option);
+          }
+
+        },
+        error: function (err) {
+          alert('提交异常，请重新提交')
+          console.log(err)
+        }
+      })
+
+    }
+    function displayChart(sku) {
+      console.log(sku)
+      $("#" + sku).remove();
+    }
+    //后台获取所有商品的定时任务
+    $.ajax({
+      type: "GET",
+      url: "http://localhost:3000/users/querySchedule",
+      dataType: "json",
+      success: function (data) {
+        console.log(data);
+        var str = '';
+        data.forEach((item) => {
+          str = str + '<input id="' + item.sku + '_block" type="button" onclick=showChart(' + item.sku + ') value="展示"/><input id="' + item.sku + '_display" type="button" onclick=displayChart(' + item.sku + ') value="隐藏"/>' +
+            '<span><a href="https://item.jd.com/' + item.sku + '.html">' + (item.name ? item.sku + " " + item.name : item.sku + " 这个商品没名字，点击查看") + '</a></span></br>';
+        });
+        $("#skuButtons").append(str)
+      },
+      error: function (error) {
+        console.log(error)
+      }
+    })
+
+
+    /*
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'));
+    // 指定图表的配置项和数据
+    var option = {
+      title: {
+        text: ' 荣耀V20'
+      },
+      tooltip: { trigger: "axis" },
+      legend: {
+        data: ['价格']
+      },
+      xAxis: {
+        data: []
+      },
+      yAxis: {},
+      series: [{
+        name: '价格',
+        type: 'line',
+        symbol: 'circle',
+        //data设置为空，异步加载数据展示
+        data: []
+      }]
+    };
+    myChart.hideLoading();
+    // 获取sku数据
+    $.ajax({
+      type: "GET",
+      url: "http://localhost:3000/users/queryGoods?sku=100000822981",
+      dataType: "json",
+      success: function (data) {
+        //截取10个数据展示
+        var subdata = data.slice(0);
+        var xdata = [];
+        var ydata = [];
+        subdata.map((item) => {
+          xdata.push(item.crate_stamp);
+          ydata.push(parseFloat(item.price));
+        })
+        option.xAxis.data = xdata;
+        option.series[0].data = ydata;
+        console.log(option)
+        myChart.setOption(option);
+      },
+      error: function (err) {
+        alert('提交异常，请重新提交')
+        console.log(err)
+      }
+    })
+
+
+
+    // 使用刚指定的配置项和数据显示图表。
+    //myChart.setOption(option);
+    */
+  </script>
+</body>
+
+</html>
